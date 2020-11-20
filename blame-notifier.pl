@@ -136,7 +136,7 @@ sub get_repo_url {
 }
 
 sub get_current_branch {
-    my $branch = `git branch --show-current`;
+    my $branch = `git rev-parse --abbrev-ref HEAD`;
     return $branch;
 }
 
