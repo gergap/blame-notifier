@@ -130,6 +130,16 @@ sub get_code {
     return $code;
 }
 
+sub get_repo_url {
+    my $url = `git config --get remote.origin.url`;
+    return $url;
+}
+
+sub get_current_branch {
+    my $branch = `git branch --show-current`;
+    return $branch;
+}
+
 # simple function which turns an email address into name and lastname
 # this works only for our corrate mails with this syntax: name.lastname@domain
 sub extract_user_name {
@@ -151,6 +161,8 @@ sub create_message {
     my $issues = shift;
     my $author = shift;
     my $id = extract_user_name($author);
+    my $url = get_repo_url();
+    my $branch = get_current_branch();
     my $msg = "";
     my $count = 0;
 
@@ -161,6 +173,7 @@ sub create_message {
 Hi $id->{name},<br/>
 <br/>
 one of your commits introduced a new PVS issue.<br/>
+repository: $url ($branch)<br/>
 <br/>
 EOF
 
