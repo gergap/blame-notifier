@@ -1,0 +1,12 @@
+---
+# database connection string
+dsn: DBI:mysql:blame
+# database username
+username: blame
+# database password
+password: secret_mysql_password
+# smtp sender address
+smtp_from: pvs-studio@domain.com
+# smtp subject
+smtp_subject: New PVS Issues
+
