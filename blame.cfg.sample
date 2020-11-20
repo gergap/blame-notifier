@@ -9,4 +9,6 @@ password: secret_mysql_password
 smtp_from: pvs-studio@domain.com
 # smtp subject
 smtp_subject: New PVS Issues
-
+# path substitution
+path_search: '/root/src/src/'
+path_replace: ''

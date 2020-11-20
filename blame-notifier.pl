@@ -104,6 +104,9 @@ sub parse_errors {
             ### type: $type
             ### code: $code
             ### message: $message
+            if (defined $config->{path_search} && defined $config->{path_replace}) {
+                $file =~ s/$config->{path_search}/$config->{path_replace}/;
+            }
             push @issues, { file => $file, line => $line, col => $col, type => $type, code => $code, message => $message };
         } else {
             print(STDERR "error: could not parse error message\n");
