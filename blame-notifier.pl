@@ -16,7 +16,7 @@ use Getopt::Std;
 # GRANT ALL on blame.* TO 'blame'@'localhost' IDENTIFIED BY 'blame';
 
 # load config
-my $config = LoadFile('blame.cfg');
+my $config = LoadFile('/etc/blame.cfg');
 my $dbh;
 my $db_stmt_insert;
 my $db_stmt_lookup;
