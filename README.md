@@ -101,6 +101,12 @@ that is only allowed to connect from localhost and only has access to the 'blame
 The blame-notifier tool read a configuration file `/etc/blame.cfg`.
 This file is in YAML format.
 
+```sh
+$> sudo cp blame.cfg.sample /etc/blame.cfg
+$> sudo chmod 600 /etc/blame.cfg
+$> sudoedit /etc/blame.cfg
+````
+
 ```yml
 ---
 # database connection string
