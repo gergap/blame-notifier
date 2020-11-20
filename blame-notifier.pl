@@ -173,7 +173,8 @@ sub create_message {
 Hi $id->{name},<br/>
 <br/>
 one of your commits introduced a new PVS issue.<br/>
-repository: $url ($branch)<br/>
+<br/>
+<b>repository:</b> $url ($branch)<br/>
 <br/>
 EOF
 
