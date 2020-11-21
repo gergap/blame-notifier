@@ -418,7 +418,7 @@ sub main {
                 push @recipients, $issue->{email} if ($issue->{email});
             } else {
                 print(STDERR "issue with no commit\n");
-                print Dumper($issue);
+#                print Dumper($issue);
             }
         }
     }
