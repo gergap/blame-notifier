@@ -4,19 +4,18 @@ use warnings;
 use strict;
 use autodie;
 #use Smart::Comments;
-use Data::Dumper;
-use DBI;
-use MIME::Lite;
-use YAML qw(LoadFile);
-use List::MoreUtils qw(uniq);
-use Getopt::Std;
+#use Data::Dumper;
+use DBI;                        # Database module
+use MIME::Lite;                 # Email module
+use YAML qw(LoadFile);          # YAML parser
+use List::MoreUtils qw(uniq);   # provides uniq filter function
+use Getopt::Std;                # commandline parsing
+use FindBin;                    # for loading my module next to the pl file
+use lib "$FindBin::Bin";
+use SyntaxHighlighter qw(syntax_highlight); # my syntax highlighting code
 
-# Database setup:
-# CREATE DATABASE blame;
-# GRANT ALL on blame.* TO 'blame'@'localhost' IDENTIFIED BY 'blame';
-
-# load config
-my $config = LoadFile('/etc/blame.cfg');
+# global variables
+my $config;
 my $dbh;
 my $db_stmt_insert;
 my $db_stmt_lookup;
@@ -182,12 +181,13 @@ EOF
         next if ($issue->{email} ne $author);
 
         my $code = get_code($issue->{file}, $issue->{line});
+        my $html = syntax_highlight($code);
         $msg .= <<EOF;
 <p>
 <b>$issue->{type}: V$issue->{code} $issue->{message}</b></br>
 $issue->{file}:$issue->{line}</br>
 <pre>
-$code
+$html
 </pre>
 </p>
 EOF
@@ -361,6 +361,19 @@ sub sendmail {
     }
 }
 
+sub load_config {
+    if (-f '/etc/blame.cfg') {
+        $config = LoadFile('/etc/blame.cfg');
+    }
+    if (-f "$ENV{HOME}/.blame.cfg") {
+        $config = LoadFile("$ENV{HOME}/.blame.cfg");
+    }
+    if (!defined $config) {
+        printf(STDERR "error: could not load config file.\n");
+        exit(1);
+    }
+}
+
 sub main {
     my %opts;
 
@@ -375,6 +388,8 @@ sub main {
     if (exists $opts{v}) {
         $verbose = 1;
     }
+
+    load_config();
 
     db_connect();
     db_create_tables();

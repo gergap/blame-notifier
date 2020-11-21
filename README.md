@@ -160,8 +160,6 @@ on the host system. You can bind the mysql unix domain socket to the container u
 We could add the option to send plaintext mails instead of HTML mails, which are preferred by many developers.
 Or just use multipart mails correctly and offer HTML as well as a plaintext part.
 
-For the HTML mail we could improve this by add a syntax highlight for the code snippets.
-
 # Tip for Vim Users
 
 As a Vim user you can easily jump to error locations using the normal Vim Quickfix cycle.

@@ -1,0 +1,17 @@
+body {  background-color: #272822;  }
+
+.keyword { color: #66D9EF; font-weight: normal; }
+.type { color: #66D9EF; }
+.string { color: #F92672; font-weight: normal; }
+.comment { color: #75715E; font-weight: normal; }
+.usertype, .classname { color: #A6E22E; }
+.regexp { color: #E6DB74; }
+.specialchar { color: #AE81FF; }
+.number { color: #AE81FF; }
+.preproc { color: #E69F66; }
+.symbol { color: #FD971F; }
+.function { color: #A6E22E; }
+.cbracket { color: red; }
+.todo { color: #F92672; font-weight: bold; }
+.linenum { color: gray; }
+.variable { color: #66D9EF; }
