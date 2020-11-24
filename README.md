@@ -121,24 +121,58 @@ smtp_from: pvs-studio@domain.com
 smtp_subject: New PVS Errors
 ```
 
-# Testing
+# Usage
 
-Instead of sending email to all your developers you should use a test email address,
-which override the recipient mails extract from Git.
+The basic usage is like this:
+
+```
+$> ./blame-notifier.pl < pvs-report/errors.txt
+```
+
+Use the option `-h` to get a list of all available options.
+
+## Testing
+
+Instead of sending email to all your developers you should use a test email address first,
+which overrides the recipient mail addresses extracted from Git.
 
 ```
 $> ./blame-notifier.pl -r me@domain.com < pvs-report/errors.txt
 ```
 
-The emails will be sent only once. If you want to forget all store issues in the DB
-add the option `-d`, which will create SQL DROP TABLE statement and recreates
-the database.
+The emails will be sent only once for each found issue. If you want to forget
+all stored issues in the DB add the option `-d`, which will create SQL DROP
+TABLE statement and recreates the database table.
 
 ```
 $> ./blame-notifier.pl -d -r me@domain.com < pvs-report/errors.txt
 ```
 
 Another option is `-v`, which adds some verbose output to see what is going on.
+
+## Advanced options
+
+### Adding Attachments
+
+You can add attachments to the mail like the PVS report itself or the html variant of it.
+Therefor use the `-a` options which takes a comma separated list of filenames.
+
+```
+$> ./blame-notifier.pl -a 'pvs-report/errors.txt,pvs-report/errors.html' < pvs-report/errors.txt
+```
+
+### Path substitution
+
+When running the PVS build in Docker, but blame-notifier on the host system, the paths of the PVS error report might not match.
+In this case you can configure path substitution in the `blame.cfg` configuration file.
+
+```
+# path substitution
+path_search: '/guest/path/to/project/'
+path_replace: '/host/path/to/project'
+```
+
+This will substitute the paths of errors.txt before calling _git_ to extract information.
 
 ## Debugging
 
@@ -154,6 +188,10 @@ In our case we run the whole CI and the PVS analyze script in a Docker container
 This means you need to setup the 'sendmail' tool in Docker. The database should be installed
 on the host system. You can bind the mysql unix domain socket to the container using Docker's
 `-v` option.
+
+An alternative solution is mounting a shared folder into the Docker guest, where the PVS results
+are saved and then run the blame-notifier on the host system. The advantage of this concept is,
+that you don't need to setup blame-notifier in every docker container.
 
 # Future Improvements
 
