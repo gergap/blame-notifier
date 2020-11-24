@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS errors(
     col INT NOT NULL,
     type VARCHAR(10) NOT NULL,
     code INT NOT NULL,
-    message VARCHAR(255) NOT NULL
+    message VARCHAR(255) NOT NULL,
+    INDEX issue (commit, file, line)
 );
 EOF
     $dbh->do($sql);
