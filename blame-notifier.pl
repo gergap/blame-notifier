@@ -155,7 +155,8 @@ sub get_current_branch {
 }
 
 # simple function which turns an email address into name and lastname
-# this works only for our corrate mails with this syntax: name.lastname@domain
+# this works only for our corporate mails with this syntax: name.lastname@domain
+# as a fallback it will use the complete part before @domain.
 sub extract_user_name {
     my $email = shift;
     my $id = {
@@ -166,6 +167,9 @@ sub extract_user_name {
     if ($email =~ m/(\w+)\.(\w+)@/) {
         $id->{name} = ucfirst($1);
         $id->{lastname} = ucfirst($2);
+    } elsif ($email =~ m/([\w-]+)@/) {
+        $id->{name} = ucfirst($1);
+        $id->{lastname} = '';
     }
 
     return $id;
