@@ -118,14 +118,14 @@ that is only allowed to connect from localhost and only has access to the 'blame
 
 ## Configuration
 
-The blame-notifier tool read a configuration file `/etc/blame.cfg`.
-This file is in YAML format.
+The blame-notifier tool reads a configuration file. It will search in two locations
+for this file:
 
-```sh
-$> sudo cp blame.cfg.sample /etc/blame.cfg
-$> sudo chmod 600 /etc/blame.cfg
-$> sudoedit /etc/blame.cfg
-````
+ * `/etc/blame.cfg`
+ * `$HOME/.blame.cfg`
+
+If both are available both will be loaded, so that the later can override options
+from the global config file. The file contents is in YAML format.
 
 ```yml
 ---
@@ -138,8 +138,20 @@ password: secret_mysql_password
 # smtp sender address
 smtp_from: pvs-studio@domain.com
 # smtp subject
-smtp_subject: New PVS Errors
+smtp_subject: New PVS Issues
+# path substitution
+path_search: '/root/src/src/'
+path_replace: ''
 ```
+
+You can create the file by copying the sample config and setting correct file permissions.
+Because this file contains credentials it should not be world readable.
+
+```sh
+$> sudo cp blame.cfg.sample /etc/blame.cfg
+$> sudo chmod 600 /etc/blame.cfg
+$> sudoedit /etc/blame.cfg
+````
 
 # Usage
 
