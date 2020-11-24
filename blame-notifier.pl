@@ -24,6 +24,21 @@ my $fuzz = 50; # max line number difference for fuzzy lookup
 my $drop_tables = 0; # for testing
 my $recipient_override; # for testing
 my $verbose = 0; # for testing
+my @attachments; # array of file paths that should get attached (e.g. errors.txt)
+
+sub usage {
+    print << 'EOF';
+blame-notifier.pl [options] < errors.txt
+Options:
+  -a            : One ore more attachments. Filenames should be separated by a comma.
+  -h            : Print this help.
+  -d            : Drop table with all stored issues.
+  -r <email>    : Override recipient email addresses.
+Examples:
+   * Testing   : blame-notifier.pl -d -r user@domain.com -a pvs-report/index.html < pvs-report/errors.txt
+   * Production: blame-notifier.pl -a pvs-report/index.html < pvs-report/errors.txt
+EOF
+}
 
 sub verbose {
     print(@_) if $verbose > 0;
@@ -337,19 +352,13 @@ sub sendmail {
         Type     => 'text/html',
         Data     => $message
     );
-    if (-f 'pvs-report/errors.txt') {
-        $mail->attach(
-            Type => 'text/plain',
-            Path => 'pvs-report/errors.txt',
-            Filename => 'errors.txt',
-            Disposition => 'attachment');
-    }
-    if (-f 'pvs-report/index.html') {
-        $mail->attach(
-            Type => 'text/html',
-            Path => 'pvs-report/index.html',
-            Filename => 'index.html',
-            Disposition => 'attachment');
+    foreach my $attachment (@attachments) {
+        if (-f $attachment) {
+            $mail->attach(
+                Type => 'AUTO',
+                Path => $attachment,
+                Disposition => 'attachment');
+        }
     }
 
     if (open(my $sendmail, "|/usr/sbin/sendmail -t -oi")) {
@@ -378,9 +387,16 @@ sub main {
     my %opts;
 
     # parse commandline args
-    getopts('dr:v', \%opts);
+    getopts('a:dhr:v', \%opts);
+    if (exists $opts{a}) {
+        @attachments = split(/,/, $opts{a});
+    }
     if (exists $opts{d}) {
         $drop_tables = 1;
+    }
+    if (exists $opts{h}) {
+        usage();
+        exit(0);
     }
     if (exists $opts{r}) {
         $recipient_override = $opts{r};
