@@ -20,6 +20,7 @@ This is a simple Perl script which notifies you about new PVS issues.
 * A MySql/MariaDB must be set up for tracking issues
 * sendmail compatible program must be installed and setup for sending emails
 * Perl must be installed, which is normally the case on every Linux machine
+* GNU Source Highlighter (optional)
 
 # Installation
 
@@ -30,7 +31,26 @@ After cloning this repository you need to install the following requirements.
 
 ## Install Perl Libraries
 
-    $> sudo apt install libdbi-perl libclass-dbi-mysql-perl libmime-lite-perl libyaml-perl
+This script requires the following Perl modules:
+
+* DBI - Database Calss
+* MIME::Lite - Creating Email in MIME format
+* YAML - YML parser for loading config files
+* List::MoreUtils - Some list utilities like e.g. `uniq`
+* Getopt::Std - Command line argument parsing
+* FindBin - For finding the installation path of the Perl script
+* IPC::Filter (optional, for syntax highlighting)
+
+On Debian based systems you can install them this way:
+
+    $> sudo apt install libdbi-perl libclass-dbi-mysql-perl libmime-lite-perl libyaml-perl liblist-moreutils-perl libgetopt-simple-perl libipc-filter-perl
+
+## Install GNU Source Highlight (optional)
+
+This program is used to create basic syntax highlighting for code fragments.
+It's not perfect due the git-blame output-format, but it is better than nothing.
+
+    $> sudo apt install source-highlight
 
 ## Install sendmail
 
