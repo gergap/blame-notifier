@@ -349,6 +349,7 @@ sub sendmail {
 
     my $mail = MIME::Lite->new(
         To => $recipient,
+        CC => $config->{smtp_cc},
         From => $config->{smtp_from},
         Subject => $config->{smtp_subject} // "New PVS Errors",
         Type    => 'multipart/mixed'
