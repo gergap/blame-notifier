@@ -25,6 +25,7 @@ my $drop_tables = 0; # for testing
 my $recipient_override; # for testing
 my $verbose = 0; # for testing
 my @attachments; # array of file paths that should get attached (e.g. errors.txt)
+my $version = "1.0.0"; # software version
 
 sub usage {
     print << 'EOF';
@@ -227,6 +228,11 @@ EOF
 These issues are identified by its commit SHA1, file and line number and
 will be reported only once.
 </p>
+<hr />
+<small>The message was sent by <code>blamenotifier.pl V$version.</code><br />
+(C) 2020 Gerhard Gappmeier <br/>
+Repo: <a href="https://www.github.com/gergap/blame-notifier">https://www.github.com/gergap/blame-notifier</a>
+</small>
 EOF
     }
     $msg .= "</body></html>\n";
